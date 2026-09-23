@@ -1,0 +1,57 @@
+site_name: Pavanraj Parthiban — Data & AI Documentation
+site_description: >-
+  Technical writing samples: data pipelines, SQL, and AI systems documented from
+  hands-on engineering work rather than secondhand research.
+site_url: https://pvawsome.github.io/docs-portfolio/
+repo_url: https://github.com/pvawsome/docs-portfolio
+repo_name: pvawsome/docs-portfolio
+edit_uri: edit/main/docs/
+copyright: Pavanraj Parthiban
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.top
+    - navigation.footer
+    - content.code.copy
+    - content.action.edit
+    - toc.follow
+
+nav:
+  - Home: index.md
+  - How this portfolio is built: about.md
+  - Writing samples:
+      - Overview: samples/index.md
+      - "01 · A staging-to-typed SQL Server pipeline": samples/staging-to-typed-pipeline.md
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - def_list
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+
+plugins:
+  - search
