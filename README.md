@@ -1,63 +1,80 @@
-# docs-portfolio
+# Technical writing samples
 
-Technical writing samples — data pipelines, SQL, and AI systems documented from
-hands-on engineering work. Built as a docs-as-code project and published with
-GitHub Pages.
+Documentation I wrote from hands-on engineering work. **The Markdown in `docs/` is the
+deliverable** — read it directly on GitHub, no site build required.
 
-**Live site:** https://pvawsome.github.io/docs-portfolio/
+> This repository is intentionally separate from my analytics work. It shares no code, no
+> configuration, and no CI with any other repository.
 
-> This repository is intentionally separate from my analytics work. It shares no code,
-> no configuration, and no CI with any other repository.
+## Start here
 
-## What's here
-
-| Path | Contents |
+| Read | What it is |
 | --- | --- |
-| `docs/index.md` | Landing page — positioning and proof points |
-| `docs/about.md` | How the portfolio is built, and why each sample declares a Diátaxis doc type |
-| `docs/samples/index.md` | Sample index and rationale |
-| `docs/samples/staging-to-typed-pipeline.md` | **Sample 01** — how-to guide: a staging-to-typed SQL Server pipeline with reconciliation |
-| `mkdocs.yml` | MkDocs + Material configuration and navigation |
+| [`docs/index.md`](docs/index.md) | Landing page — positioning and proof points |
+| [`docs/samples/staging-to-typed-pipeline.md`](docs/samples/staging-to-typed-pipeline.md) | **Sample 01** — how-to guide: a staging-to-typed SQL Server pipeline with reconciliation |
+| [`docs/about.md`](docs/about.md) | How this portfolio is built, and why each sample declares a Diátaxis doc type |
+| [`docs/samples/index.md`](docs/samples/index.md) | Sample index and rationale |
+| [`PLAN.md`](PLAN.md) | Build record — what was produced, in what order, and why |
 
 ## Sample 01
 
-A how-to guide for landing raw CSVs into SQL Server through a text-only staging layer
-and a strongly typed analytical layer, with reconciliation between them so that a
-successful load can never be a logically wrong load.
+A how-to guide for landing raw CSVs into SQL Server through a text-only staging layer and
+a strongly typed analytical layer, with reconciliation between them so that a successful
+load can never be a logically wrong load.
 
 Covers: staging design, positional `BULK INSERT` hazards, `TRY_CONVERT` and counting the
 `NULL`s it produces, control-total reconciliation, key uniqueness and orphan checks,
 trusted vs. untrusted foreign keys, and reporting views with a declared grain.
 
-Grounded in a completed project: 503,475 collisions, 640,522 casualties, and 920,692
-vehicle records across five years of public UK road-safety data.
+Grounded in a completed project: **503,475 collisions, 640,522 casualties, and 920,692
+vehicle records** across five years of public UK road-safety data.
 
-## Running locally
+## Repository layout
+
+```
+.
+├── README.md                                    <- you are here
+├── PLAN.md                                      <- build record
+├── docs/
+│   ├── index.md                                 <- landing page
+│   ├── about.md                                 <- how the portfolio is built
+│   └── samples/
+│       ├── index.md                             <- sample index
+│       └── staging-to-typed-pipeline.md         <- SAMPLE 01
+├── mkdocs.yml                                   <- optional local preview config
+└── requirements.txt                             <- optional local preview deps
+```
+
+## Optional: local preview
+
+The documents are plain Markdown and render on GitHub as-is. `mkdocs.yml` is included only
+so the same files can be previewed as a themed site locally — nothing here is published to
+GitHub Pages.
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-
-mkdocs serve      # local preview at http://127.0.0.1:8000
-mkdocs build      # static output into site/
+mkdocs serve      # http://127.0.0.1:8000
 ```
-
-## Publishing
-
-The site builds from `main` and deploys to GitHub Pages. Any change to `docs/` or
-`mkdocs.yml` is a normal pull-request-shaped edit — which is the point of building
-documentation this way.
 
 ## Conventions
 
-- **Markdown only**, no proprietary formats, so every change is reviewable in a diff.
-- **Each sample declares its doc type** (tutorial / how-to / reference / explanation) in
-  a callout at the top, because the type sets what a reader is entitled to expect.
-- **Code is real.** Snippets are taken from executed work. Where something has not been
+- **Markdown only**, so every change is reviewable in a diff and the docs survive without
+  any build tooling.
+- **Each sample declares its doc type** (tutorial / how-to / reference / explanation) in a
+  callout at the top, because the type sets what a reader is entitled to expect.
+- **Callouts use GitHub-native syntax** (`> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`,
+  `> [!CAUTION]`) so they render correctly wherever the files are read.
+- **Code is real.** Snippets come from executed work. Where something has not been
   verified, the page says so rather than implying otherwise.
 - **Limits are stated explicitly.** Every sample ends with where the guidance does *not*
   apply.
+
+## Related
+
+My analytics project — a validated SQL Server and Power BI build on the same road-safety
+data: [pvawsome/road-accident-dashboard](https://github.com/pvawsome/road-accident-dashboard)
 
 ## Licence
 

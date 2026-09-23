@@ -1,8 +1,18 @@
+# MkDocs config — OPTIONAL local preview only.
+#
+# The documentation IS the Markdown in docs/. Nothing here is published to GitHub Pages;
+# this file exists so the same files can be previewed as a themed site locally:
+#
+#   pip install -r requirements.txt && mkdocs serve
+#
+# Note: the source uses GitHub-native callouts ("> [!NOTE]"), which a local MkDocs preview
+# renders as plain blockquotes. GitHub renders them as proper callouts. GitHub is the
+# primary reading surface.
+
 site_name: Pavanraj Parthiban — Data & AI Documentation
 site_description: >-
   Technical writing samples: data pipelines, SQL, and AI systems documented from
   hands-on engineering work rather than secondhand research.
-site_url: https://pvawsome.github.io/docs-portfolio/
 repo_url: https://github.com/pvawsome/docs-portfolio
 repo_name: pvawsome/docs-portfolio
 edit_uri: edit/main/docs/
@@ -28,7 +38,6 @@ theme:
     - navigation.top
     - navigation.footer
     - content.code.copy
-    - content.action.edit
     - toc.follow
 
 nav:
@@ -48,8 +57,6 @@ markdown_extensions:
       permalink: true
   - pymdownx.superfences
   - pymdownx.details
-  - pymdownx.tabbed:
-      alternate_style: true
   - pymdownx.highlight:
       anchor_linenums: true
 

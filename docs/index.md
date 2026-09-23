@@ -39,8 +39,6 @@ actually went wrong along the way, because that is where the useful writing live
 
 ## Samples
 
-<div class="grid cards" markdown>
-
 - **01 · A staging-to-typed SQL Server pipeline that cannot silently corrupt your data**
 
   A how-to guide: land raw CSVs as text, convert with `TRY_CONVERT`, and reconcile
@@ -56,8 +54,6 @@ actually went wrong along the way, because that is where the useful writing live
 - **03 · Coming soon — a concept explainer**
 
   Turning word embeddings into something a non-specialist can actually reason about.
-
-</div>
 
 ## How to read this site
 

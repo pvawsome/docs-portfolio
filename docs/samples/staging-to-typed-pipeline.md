@@ -1,12 +1,13 @@
 # A staging-to-typed SQL Server pipeline that cannot silently corrupt your data
 
-!!! abstract "Doc type — how-to guide (Diátaxis)"
-
-    This is a **how-to guide**: it assumes you can already write SQL and want to
-    accomplish a specific task. It is goal-oriented, not a tutorial, and it will not
-    explain what a primary key is. If you want the reasoning behind the pattern
-    instead of the steps, that belongs in an explanation doc — see
-    [how this portfolio is built](../about.md) for why I keep those separate.
+> [!NOTE]
+> **Doc type — how-to guide (Diátaxis)**
+>
+> This is a **how-to guide**: it assumes you can already write SQL and want to
+> accomplish a specific task. It is goal-oriented, not a tutorial, and it will not
+> explain what a primary key is. If you want the reasoning behind the pattern
+> instead of the steps, that belongs in an explanation doc — see
+> [how this portfolio is built](../about.md) for why I keep those separate.
 
 **What you will end up with:** CSV files landing in SQL Server through two layers — a
 text-only staging layer and a strongly typed analytical layer — with a reconciliation
@@ -40,11 +41,12 @@ converts with `TRY_CONVERT`, a bad value becomes `NULL` instead of an error — 
 `NULL`s can be **counted**, which turns an anonymous crash into a measurable,
 queryable number.
 
-!!! tip "The one-sentence version"
-
-    Staging tells you *what arrived*. The typed layer tells you *what is valid*. The
-    reconciliation step between them tells you the difference — and the difference is
-    the whole point.
+> [!TIP]
+> **The one-sentence version**
+>
+> Staging tells you *what arrived*. The typed layer tells you *what is valid*. The
+> reconciliation step between them tells you the difference — and the difference is
+> the whole point.
 
 ---
 
@@ -105,11 +107,12 @@ Three deliberate choices here:
 3. **`DROP TABLE IF EXISTS` before `CREATE`.** The load should be re-runnable from
    scratch. A pipeline you cannot rerun is a pipeline you cannot trust after a failure.
 
-!!! warning "Do not truncate a staging table you have not validated yet"
-
-    `TRUNCATE TABLE` is fine for the reload itself. It is not fine as a substitute for
-    checking the previous load — once truncated, the evidence is gone. Validate first,
-    then reload. See [Step 5](#step-5-reconcile-control-totals-between-the-stages).
+> [!WARNING]
+> **Do not truncate a staging table you have not validated yet**
+>
+> `TRUNCATE TABLE` is fine for the reload itself. It is not fine as a substitute for
+> checking the previous load — once truncated, the evidence is gone. Validate first,
+> then reload. See [Step 5](#step-5-reconcile-control-totals-between-the-stages).
 
 ---
 
@@ -149,13 +152,14 @@ If the orders differ, drop and recreate the staging table to match the file. Kee
 correction as its own numbered script so the fix is version-controlled rather than
 living in someone's memory.
 
-!!! tip "Why not just use a format file?"
-
-    A format file removes the positional risk and is the right answer for a stable,
-    long-lived load. I still verify the header even when one exists, because the format
-    file is only correct until somebody regenerates the source export without telling
-    you. Verification that is cheap and runs every time beats configuration that is
-    correct only until it isn't.
+> [!TIP]
+> **Why not just use a format file?**
+>
+> A format file removes the positional risk and is the right answer for a stable,
+> long-lived load. I still verify the header even when one exists, because the format
+> file is only correct until somebody regenerates the source export without telling
+> you. Verification that is cheap and runs every time beats configuration that is
+> correct only until it isn't.
 
 ---
 
@@ -187,10 +191,11 @@ The options that matter:
 | `ROWTERMINATOR = '0x0A'` | Files exported on Linux/macOS end lines with LF, not CRLF. Getting this wrong merges rows |
 | `TABLOCK` | Bulk-load efficiency; also takes a table-level lock, which is fine for a dedicated staging table |
 
-!!! warning "A successful `BULK INSERT` proves nothing about correctness"
-
-    It proves SQL Server could read the file and find the columns. Given a column-order
-    mismatch, it proves nothing else. This is why Step 2 exists and why Step 5 follows.
+> [!WARNING]
+> **A successful `BULK INSERT` proves nothing about correctness**
+>
+> It proves SQL Server could read the file and find the columns. Given a column-order
+> mismatch, it proves nothing else. This is why Step 2 exists and why Step 5 follows.
 
 Repeat for each additional file. If your sources are related — a parent file and one or
 more child files — load all of them before moving to the typed layer, so the
@@ -244,12 +249,13 @@ Every line is doing the same two-part job, and both halves are load-bearing:
 - **`TRY_CONVERT`** — returns `NULL` on failure instead of aborting the insert. The load
   finishes; the bad values become countable.
 
-!!! danger "`TRY_CONVERT` hides errors unless you go looking for them"
-
-    This is the trade-off, stated plainly. `TRY_CONVERT` converts a hard failure into a
-    soft one, which is exactly what you want for resilience — and exactly what makes a
-    silent data-loss bug possible. The mitigation is not to avoid `TRY_CONVERT`; it is
-    to count the `NULL`s it produces. Step 5 does that. **Never skip Step 5.**
+> [!CAUTION]
+> **`TRY_CONVERT` hides errors unless you go looking for them**
+>
+> This is the trade-off, stated plainly. `TRY_CONVERT` converts a hard failure into a
+> soft one, which is exactly what you want for resilience — and exactly what makes a
+> silent data-loss bug possible. The mitigation is not to avoid `TRY_CONVERT`; it is
+> to count the `NULL`s it produces. Step 5 does that. **Never skip Step 5.**
 
 Then add the primary keys — the business key for the parent, and a composite key for each
 child, because child references are typically unique only *within* a parent:
@@ -265,14 +271,15 @@ ALTER TABLE dbo.Vehicles
     ADD CONSTRAINT PK_Vehicles PRIMARY KEY CLUSTERED (collision_index, vehicle_reference);
 ```
 
-!!! tip "Why composite keys instead of a surrogate `IDENTITY` column"
-
-    A surrogate integer key is easier to join on and is often the right call. I use the
-    composite natural key here because it stays traceable back to the source file — when
-    a row looks wrong, you can find its origin without a mapping table. For a pipeline
-    that ends in a deployed reporting model, an `IDENTITY` surrogate plus a unique
-    constraint on the natural key is the more common professional choice, and it is what
-    I would reach for if the model grew past a handful of tables.
+> [!TIP]
+> **Why composite keys instead of a surrogate `IDENTITY` column**
+>
+> A surrogate integer key is easier to join on and is often the right call. I use the
+> composite natural key here because it stays traceable back to the source file — when
+> a row looks wrong, you can find its origin without a mapping table. For a pipeline
+> that ends in a deployed reporting model, an `IDENTITY` surrogate plus a unique
+> constraint on the natural key is the more common professional choice, and it is what
+> I would reach for if the model grew past a handful of tables.
 
 ---
 
@@ -387,13 +394,14 @@ SELECT
 FROM sys.foreign_keys AS fk;
 ```
 
-!!! tip "Read `is_not_trusted`, not just `is_disabled`"
-
-    A foreign key can be **enabled** and still be **untrusted**. `is_disabled = 0` means
-    the constraint is enforced on future writes; `is_not_trusted = 1` means the engine
-    never validated the rows that were already there. Both must be `0`. This distinction
-    is invisible unless you query for it, and it is the difference between a constraint
-    that protects your data and one that only decorates the schema.
+> [!TIP]
+> **Read `is_not_trusted`, not just `is_disabled`**
+>
+> A foreign key can be **enabled** and still be **untrusted**. `is_disabled = 0` means
+> the constraint is enforced on future writes; `is_not_trusted = 1` means the engine
+> never validated the rows that were already there. Both must be `0`. This distinction
+> is invisible unless you query for it, and it is the difference between a constraint
+> that protects your data and one that only decorates the schema.
 
 Index the columns you actually join and filter on — not every column:
 
