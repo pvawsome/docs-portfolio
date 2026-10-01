@@ -80,3 +80,6 @@ data: [pvawsome/road-accident-dashboard](https://github.com/pvawsome/road-accide
 
 Sample content is published for reading and reference. Please don't republish it as your
 own portfolio material. Code snippets may be reused freely.
+
+See [`LICENSE`](LICENSE) for the full terms (written content is all rights reserved;
+code snippets and configuration are free to reuse).

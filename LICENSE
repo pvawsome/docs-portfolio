@@ -1,0 +1,36 @@
+Writing samples and documentation in this repository
+Copyright (c) 2026 Pavanraj Parthiban. All rights reserved.
+
+TERMS OF USE
+------------
+
+The written content in this repository — the Markdown documents under docs/,
+the README, and PLAN.md — is published for reading and reference only.
+
+You may:
+  - Read, link to, and quote short excerpts with clear attribution and a link
+    back to this repository.
+
+You may not:
+  - Republish, copy, or reuse the writing, in whole or in substantial part, as
+    your own portfolio, blog, article, course material, or other published work
+    without prior written permission.
+  - Feed the written content into a dataset or service for the purpose of
+    training or republishing it as generated content.
+
+Code and configuration
+----------------------
+
+Small code snippets shown inside the documentation, and the configuration files
+in this repository (for example mkdocs.yml and requirements.txt), may be reused
+freely for any purpose without attribution.
+
+No warranty
+-----------
+
+The content is provided "as is", without warranty of any kind. The guidance
+reflects work performed against specific data and environments; apply it with
+your own judgement.
+
+For permissions beyond the above, contact the author via GitHub:
+https://github.com/pvawsome
